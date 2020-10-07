@@ -1,0 +1,5 @@
+.Rproj.user
+.Rhistory
+data/derived_data/*
+figures/*
+models/*
