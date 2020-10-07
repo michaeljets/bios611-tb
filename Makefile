@@ -54,6 +54,13 @@ models/lm_fit_yes_hci.rds\
 # generate report
 report.pdf:\
  report.Rmd\
- models/*\
- figures/*
+ models/lm_fit_yes_hci.rds\
+ models/lm_fit_no_hci.rds\
+ models/rf_fit_yes_hci.rds\
+ models/rf_fit_no_hci.rds\
+ models/inc_model_comparison.rds\
+ figures/incidence_maps.png\
+ figures/incidence_maps_2018.png\
+ figures/inc_hist.png\
+ figures/pair_scatter.png
 	Rscript -e "rmarkdown::render('report.Rmd')"
