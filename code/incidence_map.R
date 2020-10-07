@@ -3,7 +3,7 @@
 
 # set up
 source('code/load_libraries.R')
-source('clean_data.R')
+source('code/clean_data.R')
 
 # load world data
 world = ne_countries(scale = 'medium', returnclass = 'sf')
