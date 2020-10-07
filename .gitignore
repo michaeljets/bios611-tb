@@ -1,5 +1,5 @@
 .Rproj.user
 .Rhistory
-data/derived_data/*
-figures/*
-models/*
+data/derived_data/*.csv
+figures/*.png
+models/*.rds
