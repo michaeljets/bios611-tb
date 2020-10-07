@@ -2,6 +2,7 @@
 
 # read data
 source('code/load_libraries.R')
+burden = read_csv('data/source_data/TB_burden_countries_2020-09-07.csv')
 country_indicators = read_csv('data/derived_data/country_indicators.csv')
 
 # prep data for linear regression use
@@ -26,7 +27,7 @@ inc_hist = ggplot(dat, aes(e_inc_100k)) +
   scale_y_continuous(expand = c(0, 0))
 
 # pairwise scatter plots
-pairs(dat %>% select(-`Country Name`, -`Country Code`), labels = c(meta$`Series Name`, 'TB incidence'))
+# pairs(dat %>% select(-`Country Name`, -`Country Code`), labels = c(meta$`Series Name`, 'TB incidence'))
 
 # fit data by linear regression
 reg_data1 = dat %>% select(-`Country Name`, -`Country Code`) %>% drop_na()
