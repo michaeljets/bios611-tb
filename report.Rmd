@@ -7,7 +7,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 # knitr::opts_knit$set(root.dir = "C:/Users/mjets/Dropbox (Personal)/BIOS 611/project1")
-knitr::opts_knit$set(root.dir = "~/Dropbox/BIOS 611/project1")
+# knitr::opts_knit$set(root.dir = "~/Dropbox/BIOS 611/project1")
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
