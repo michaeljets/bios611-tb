@@ -31,13 +31,15 @@ figures/incidence_maps.png\
  figures/incidence_maps_2018.png:\
  code/incidence_map.R\
  code/clean_data.R\
- code/load_libraries.R
+ code/load_libraries.R\
+ data/derived_data/country_indicators.csv
 	Rscript code/incidence_map.R
 figures/inc_hist.png\
  figures/pair_scatter.png:\
  code/incidence_models.R\
  code/clean_data.R\
- code/load_libraries.R
+ code/load_libraries.R\
+ data/derived_data/country_indicators.csv
 	Rscript code/incidence_models.R
 
 # models
@@ -48,7 +50,8 @@ models/lm_fit_yes_hci.rds\
  models/inc_model_comparison.rds:\
  code/incidence_models.R\
  code/clean_data.R\
- code/load_libraries.R
+ code/load_libraries.R\
+ data/derived_data/country_indicators.csv
 	Rscript code/incidence_models.R
 
 # generate report
@@ -62,5 +65,6 @@ report.pdf:\
  figures/incidence_maps.png\
  figures/incidence_maps_2018.png\
  figures/inc_hist.png\
- figures/pair_scatter.png
+ figures/pair_scatter.png\
+ code/clean_data.R
 	Rscript -e "rmarkdown::render('report.Rmd')"
