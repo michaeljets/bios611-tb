@@ -14,15 +14,18 @@ burden = read_csv('data/source_data/TB_burden_countries_2020-09-07.csv')
 mdr_tb = read_csv('data/source_data/TB_dr_surveillance_2020-09-07.csv')
 
 
-# Worldwide prevalence over time ------------------------------------------
+# Worldwide incidence over time -------------------------------------------
 
 world_burden = burden %>%
   group_by(year) %>%
   summarize(incidence = (sum(e_inc_num) / sum(e_pop_num))*100000,
-            incidence_low = (sum(e_inc_num) / sum(e_pop_num_lo))*100000,
-            incidence_high = (sum(e_inc_num) / sum(e_pop_num_hi))*100000)
+            incidence_low = (sum(e_inc_num_lo) / sum(e_pop_num))*100000,
+            incidence_high = (sum(e_inc_num_hi) / sum(e_pop_num))*100000,
+            deaths = (sum(e_mort_num) / sum(e_pop_num))*100000,
+            deaths_low = (sum(e_mort_num_lo) / sum(e_pop_num))*100000,
+            deaths_high = (sum(e_mort_num_hi) / sum(e_pop_num))*100000,)
 
-gg_world_prev = ggplot(data = world_burden,
+gg_world_inc = ggplot(data = world_burden,
        mapping = aes(x = year)) +
   geom_point(aes(y = incidence)) +
   geom_line(aes(y = incidence)) + 
@@ -30,6 +33,15 @@ gg_world_prev = ggplot(data = world_burden,
   geom_line(aes(y = incidence_high), linetype = 2) +
   labs(y = 'incidence per 100k',
        title = 'Figure 1: Worldwide incidence of TB per 100k from 2000-2018')
+
+gg_world_deaths = ggplot(data = world_burden,
+                         mapping = aes(x = year)) +
+  geom_point(aes(y = deaths)) +
+  geom_line(aes(y = deaths)) + 
+  geom_line(aes(y = deaths_low), linetype = 2) +
+  geom_line(aes(y = deaths_high), linetype = 2) +
+  labs(y = 'deaths per 100k',
+       title = 'Figure 2: Worldwide deaths from TB per 100k from 2000-2018')
 
 
 
@@ -67,7 +79,8 @@ gg_mdr = ggplot(mdr_tb2,
 
 # Save plots --------------------------------------------------------------
 
-ggsave('figures/world_inc.png', gg_world_prev, width = 5, height = 3, units = 'in', scale = 2)
+ggsave('figures/world_inc.png', gg_world_inc, width = 5, height = 3, units = 'in', scale = 2)
+ggsave('figures/world_deaths.png', gg_world_deaths, width = 5, height = 3, units = 'in', scale = 2)
 ggsave('figures/incidence_pop_all.png', gg_pop1, width = 5, height = 3, units = 'in', scale = 2)
 ggsave('figures/incidence_pop_zoom.png', gg_pop2, width = 5, height = 3, units = 'in', scale = 2)
 ggsave('figures/mdr_counts_country.png', gg_mdr, width = 5, height = 3, units = 'in', scale = 2)
