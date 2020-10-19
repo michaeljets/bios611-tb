@@ -18,9 +18,9 @@ mdr_tb = read_csv('data/source_data/TB_dr_surveillance_2020-09-07.csv')
 
 world_burden = burden %>%
   group_by(year) %>%
-  summarize(incidence = mean(e_inc_100k),
-            incidence_low = mean(e_inc_100k_lo),
-            incidence_high = mean(e_inc_100k_hi))
+  summarize(incidence = (sum(e_inc_num) / sum(e_pop_num))*100000,
+            incidence_low = (sum(e_inc_num) / sum(e_pop_num_lo))*100000,
+            incidence_high = (sum(e_inc_num) / sum(e_pop_num_hi))*100000)
 
 gg_world_prev = ggplot(data = world_burden,
        mapping = aes(x = year)) +
@@ -29,7 +29,7 @@ gg_world_prev = ggplot(data = world_burden,
   geom_line(aes(y = incidence_low), linetype = 2) +
   geom_line(aes(y = incidence_high), linetype = 2) +
   labs(y = 'incidence per 100k',
-       title = 'Figure 1: Worldwide average incidence of TB per 100k from 2000-2018')
+       title = 'Figure 1: Worldwide incidence of TB per 100k from 2000-2018')
 
 
 
