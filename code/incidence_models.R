@@ -87,8 +87,10 @@ mean((rf_fit2$predicted - reg_data1$e_inc_100k)^2)
 
 # save
 ggsave('figures/inc_hist.png', inc_hist, scale = 1.5)
-png('figures/pair_scatter.png', width = 1800, height = 1000)
-pairs(dat %>% select(-`Country Name`, -`Country Code`), labels = c(meta$`Series Name`, 'TB incidence'))
+png('figures/pair_scatter.png', width = 1100, height = 800)
+pairs(dat %>% select(NY.GDP.PCAP.KD, SP.POP.TOTL, SP.RUR.TOTL.ZS, HD.HCI.OVRL, SL.UEM.TOTL.ZS), 
+      labels = c(meta$`Series Name`, 'TB incidence'),
+      cex.labels = 1.25)
 dev.off()
 
 write_csv(country_indicators_2018, 'data/derived_data/country_indicators_reg.csv')
