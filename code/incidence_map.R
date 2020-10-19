@@ -17,20 +17,22 @@ world_inc_allyears = world_inc_allyears %>%
 
 # plot incidence maps for all years
 gg_inc_maps = ggplot(data = world_inc_allyears) +
-  geom_sf(aes(fill = e_inc_100k)) +
+  geom_sf(aes(fill = e_inc_100k), size = 0.25) +
   scale_fill_viridis_c(option = 'plasma', trans = 'sqrt') + 
   facet_wrap(vars(year), ncol=4, drop=T) +
   labs(title = 'Estimated incidence per 100k') +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
-        legend.key.width = unit(0.1, 'npc'))
+        legend.key.width = unit(0.1, 'npc'),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
 
 # save it
 ggsave('figures/incidence_maps.png', plot = gg_inc_maps, scale = 1.5)
 
 # also do a version of the most recent data
 gg_inc_maps_2018 = ggplot(data = world_inc_allyears %>% filter(year==2018)) +
-  geom_sf(aes(fill = e_inc_100k)) +
+  geom_sf(aes(fill = e_inc_100k), size = 0.5) +
   scale_fill_viridis_c(option = 'plasma', trans = 'sqrt') + 
   labs(title = 'Estimated incidence per 100k, 2018') +
   theme(legend.position = 'bottom',
