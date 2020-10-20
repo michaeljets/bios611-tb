@@ -37,62 +37,69 @@ pairs(reg_data %>% filter(year=='2018') %>% select_at(c('e_inc_100k', select_ind
 
 # OLS ---------------------------------------------------------------------
 
+# define a test/train sets
+set.seed(73277711)
+countries = unique(reg_data$country)
+countries_holdout = countries[sample(1:length(countries), 35, replace = F)]
+test_set = reg_data %>% filter(country %in% countries_holdout) %>% select(-country)
+train_set = anti_join(reg_data, test_set) %>% select(-country)
+
 # all predictors
-lm_fit1 = lm(e_inc_100k ~ . -country, data = reg_data)
+lm_fit1 = lm(e_inc_100k ~ ., data = train_set)
 summary(lm_fit1)
 
 # only the five in the scatter plots + year
-lm_fit2 = lm(e_inc_100k ~ ., data = reg_data %>% select_at(c(select_indicators, 'year', 'e_inc_100k')))
+lm_fit2 = lm(e_inc_100k ~ ., data = train_set %>% select_at(c(select_indicators, 'year', 'e_inc_100k')))
 summary(lm_fit2)
 
 # without year fixed effects
-lm_fit3 = lm(e_inc_100k ~ . -year -country, data = reg_data)
+lm_fit3 = lm(e_inc_100k ~ . -year, data = train_set)
 summary(lm_fit3)
 
-# compare these three models using 5-fold cv error
-set.seed(78273498)
-k = 5
-
-# define k folds
-n = nrow(reg_data)
-tmp_ind = c(rep(1:k, floor(n/k)), rep(1, n - k*floor(n/k)))
-k_folds_ind1 = sample(tmp_ind, n, replace=FALSE)
-k_folds_ind2 = sample(tmp_ind, n, replace=FALSE)
-k_folds_ind3 = sample(tmp_ind, n, replace=FALSE)
-
-errors1 = c()
-errors2 = c()
-errors3 = c()
-for (i in 1:k) {
-  # define sets set
-  hold_out_dat1 = reg_data[k_folds_ind1==i, ]
-  train_dat1 = reg_data[k_folds_ind1!=i, ]
-  
-  hold_out_dat2 = reg_data[k_folds_ind2==i, ]
-  train_dat2 = reg_data[k_folds_ind2!=i, ]
-  
-  hold_out_dat3 = reg_data[k_folds_ind3==i, ]
-  train_dat3 = reg_data[k_folds_ind3!=i, ]
-  
-  # fit model on training
-  lm_tmp1 = lm(e_inc_100k ~ ., data = train_dat1 %>% select(-country))
-  lm_tmp2 = lm(e_inc_100k ~ ., data = train_dat2 %>% select_at(c(select_indicators, 'year', 'e_inc_100k')))
-  lm_tmp3 = lm(e_inc_100k ~ ., data = train_dat3 %>% select(-country, -year))
-  
-  # get predictions for test set
-  pred_tmp1 = predict(lm_tmp1, newdata = hold_out_dat1 %>% select(-country))
-  pred_tmp2 = predict(lm_tmp2, newdata = hold_out_dat2 %>% select_at(c(select_indicators, 'year', 'e_inc_100k')))
-  pred_tmp3 = predict(lm_tmp3, newdata = hold_out_dat3 %>% select(-country, -year))
-  
-  # get mean squared error
-  errors1[i] = mean((hold_out_dat1$e_inc_100k - pred_tmp1)^2)
-  errors2[i] = mean((hold_out_dat2$e_inc_100k - pred_tmp2)^2)
-  errors3[i] = mean((hold_out_dat3$e_inc_100k - pred_tmp3)^2)
-}
-
-mean(errors1)
-mean(errors2)
-mean(errors3)
+# # compare these three models using 5-fold cv error
+# set.seed(78273498)
+# k = 5
+# 
+# # define k folds
+# n = nrow(reg_data)
+# tmp_ind = c(rep(1:k, floor(n/k)), rep(1, n - k*floor(n/k)))
+# k_folds_ind1 = sample(tmp_ind, n, replace=FALSE)
+# k_folds_ind2 = sample(tmp_ind, n, replace=FALSE)
+# k_folds_ind3 = sample(tmp_ind, n, replace=FALSE)
+# 
+# errors1 = c()
+# errors2 = c()
+# errors3 = c()
+# for (i in 1:k) {
+#   # define sets set
+#   hold_out_dat1 = reg_data[k_folds_ind1==i, ]
+#   train_dat1 = reg_data[k_folds_ind1!=i, ]
+#   
+#   hold_out_dat2 = reg_data[k_folds_ind2==i, ]
+#   train_dat2 = reg_data[k_folds_ind2!=i, ]
+#   
+#   hold_out_dat3 = reg_data[k_folds_ind3==i, ]
+#   train_dat3 = reg_data[k_folds_ind3!=i, ]
+#   
+#   # fit model on training
+#   lm_tmp1 = lm(e_inc_100k ~ ., data = train_dat1 %>% select(-country))
+#   lm_tmp2 = lm(e_inc_100k ~ ., data = train_dat2 %>% select_at(c(select_indicators, 'year', 'e_inc_100k')))
+#   lm_tmp3 = lm(e_inc_100k ~ ., data = train_dat3 %>% select(-country, -year))
+#   
+#   # get predictions for test set
+#   pred_tmp1 = predict(lm_tmp1, newdata = hold_out_dat1 %>% select(-country))
+#   pred_tmp2 = predict(lm_tmp2, newdata = hold_out_dat2 %>% select_at(c(select_indicators, 'year', 'e_inc_100k')))
+#   pred_tmp3 = predict(lm_tmp3, newdata = hold_out_dat3 %>% select(-country, -year))
+#   
+#   # get mean squared error
+#   errors1[i] = mean((hold_out_dat1$e_inc_100k - pred_tmp1)^2)
+#   errors2[i] = mean((hold_out_dat2$e_inc_100k - pred_tmp2)^2)
+#   errors3[i] = mean((hold_out_dat3$e_inc_100k - pred_tmp3)^2)
+# }
+# 
+# mean(errors1)
+# mean(errors2)
+# mean(errors3)
 
 
 
@@ -101,18 +108,30 @@ mean(errors3)
 # do a random forest for fun (rf has built-in validation to find best rf)
 set.seed(7814173)
 
-rf_fit1 = randomForest(e_inc_100k ~., data = reg_data1, ntree=500, importance=TRUE)  # default hyperparameters
-mean((rf_fit1$predicted - reg_data1$e_inc_100k)^2)
+rf_fit1 = randomForest(e_inc_100k ~ ., data = train_set, ntree=500, mtry=3, importance=TRUE)  # default hyperparameters
+rf_fit2 = randomForest(e_inc_100k ~ ., data = train_set, ntree=1000, mtry=3, importance=TRUE)
+rf_fit3 = randomForest(e_inc_100k ~ ., data = train_set, ntree=1500, mtry=3, importance=TRUE)
+rf_fit4 = randomForest(e_inc_100k ~ ., data = train_set, ntree=500, mtry=5, importance=TRUE)
+rf_fit5 = randomForest(e_inc_100k ~ ., data = train_set, ntree=1000, mtry=5, importance=TRUE)
+rf_fit6 = randomForest(e_inc_100k ~ ., data = train_set, ntree=1500, mtry=5, importance=TRUE)
 
-rf_fit2 = randomForest(e_inc_100k ~., data = reg_data2, ntree=500, importance=TRUE)  # default hyperparameters
-mean((rf_fit2$predicted - reg_data1$e_inc_100k)^2)
 
+
+# Model errors ------------------------------------------------------------
+
+errors1 = mean((test_set$e_inc_100k - predict(lm_fit1, newdata = test_set))^2)
+errors2 = mean((test_set$e_inc_100k - predict(lm_fit2, newdata = test_set))^2)
+errors3 = mean((test_set$e_inc_100k - predict(lm_fit3, newdata = test_set))^2)
+
+error_tab = data.frame(Model = c(rep('Linear regression', 3), 'Random forest'),
+                       Features = c('All', 'Subset (see text)', 'All except year', 'All'),
+                       Error = c(errors1, errors2, errors3, 
+                                 mean((test_set$e_inc_100k - predict(rf_fit2, newdata = test_set))^2)))
 
 
 # Save --------------------------------------------------------------------
 
-# save
-ggsave('figures/inc_hist.png', inc_hist, scale = 1.5)
+# scatter plot
 png('figures/pair_scatter.png', width = 1100, height = 800)
 pairs_labs = c('TB incidence', meta$`Series Name`[meta$`Series Code` %in% select_indicators])
 pairs_labs[pairs_labs=="Unemployment, total (% of total labor force) (modeled ILO estimate)"] = "Unemployment, total (% of total labor force)\n(modeled ILO estimate)"
@@ -122,20 +141,14 @@ pairs(reg_data %>% filter(year=='2018') %>% select_at(c('e_inc_100k', select_ind
       cex.labels = 1.2)
 dev.off()
 
-write_csv(country_indicators_2018, 'data/derived_data/country_indicators_reg.csv')
+# data
+write_csv(reg_data, 'data/derived_data/reg_data.csv')
 write_csv(meta, 'data/derived_data/country_indicators_reg_meta.csv')
 
-saveRDS(lm_fit1, 'models/lm_fit_yes_hci.rds')
-saveRDS(lm_fit2, 'models/lm_fit_no_hci.rds')
-saveRDS(rf_fit1, 'models/rf_fit_yes_hci.rds')
-saveRDS(rf_fit2, 'models/rf_fit_yes_hci.rds')
+# models
+saveRDS(list(lm_fit1, lm_fit2, lm_fit3, rf_fit2), 'models/models.rds')
 
-error_tab = data.frame(model = c(rep('Linear regression', 2), rep('Random forest', 2)),
-                       include_hci = c('Yes', 'No', 'Yes', 'No'),
-                       cv_error = c(mean(errors1), mean(errors2), 
-                                    mean((rf_fit1$predicted - reg_data1$e_inc_100k)^2), 
-                                    mean((rf_fit2$predicted - reg_data1$e_inc_100k)^2)))
-
+# model comparison table
 saveRDS(error_tab, 'models/inc_model_comparison.rds')
 
 
