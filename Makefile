@@ -2,7 +2,7 @@
 SHELL: /bin/bash
 
 clean:
-	rm -f derived_data/*.csv
+	rm -f data/derived_data/*.csv
 	rm -f figures/*.png
 	rm -f models/*.rds
 	rm -f report.pdf
