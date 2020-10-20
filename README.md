@@ -6,47 +6,68 @@ Project 1 Bios 611
 Tuberculosis dataset
 --------------------
 
-Proposal
---------
 
-### Description
+### Project description
 
-I will look at tuberculosis (TB) [data](https://www.who.int/tb/country/data/download/en/) published by the World Health Organization (WHO). I will mainly look at longitudinal data that relates the burden of disease with treatments. The finest aggregation is at the country-level. I will pay particular attention to information relating to multi-drug resistant TB (MDR-TB) e.g. estimates on patients undergoing MDR-TB treatment for a given country-year and their outcomes. 
+This project explores tuberculosis (TB) data published by the World Health Organization (WHO) and relates it to development indicators from the World Bank. The intention of this project is to be purely exploratory and descriptive. No causal or policy implications should be inferred from the results presented here. The purpose of this project is to explore recent TB data and get a better sense of incidence and how it varies by country and type of country. 
 
-### Preliminary figures
-
-Figure 1 shows incidence of TB per 100k averaged (simple average) across all countries from 2000-2018 (solid line). Since measurement was imperfect, the data consists of estimates with upper and lower bounds. The dashed lines represent the average upper and lower bounds. Incidence was flat in the early 2000's but declined at a steady pace until 2018. (As a side note, it appears that this recent progress may be seeing at least somewhat of a [reversal](https://www.nytimes.com/2020/08/03/health/coronavirus-tuberculosis-aids-malaria.html) due to covid.)
-
-![](figures/world_inc.png)
-
-Figures 2a and 2b plot incidence per 100k against population in 2018, with the latter plot having China and India removed, the right-most points in the first plot. Even though incidence in this case already has population in its denominator, the plots may still be interesting to see how incidence scales with population size. No immediate relationship jumps out, although it does appear that the most afflicted countries tend to be relatively small. 
-
-![](figures/incidence_pop_all.png)
-
-![](figures/incidence_pop_zoom.png)
-
-I shift now to prevalence of MDR-TB in 2018. Figure 3 shows raw case counts of MDR-TB by country in descending order and only including those with over 100 cases. This plot shows Russia as being by far the worst in terms of raw case counts, although I keep in mind its large population as well.
-
-![](figures/mdr_counts_country.png)
+A summary of the analyses are presented in `report.pdf`. 
 
 
+### Getting Started
 
-### Questions
+The project uses Docker and Make to be reproducible. Docker is a software that manages environments and Make is a tool that builds files produced by the code, including the `report.pdf`, the summary of my analyses. 
 
-- First, I would like to get a basic sense of TB incidence over time, both completely aggregated and then disaggregated by country. This will likely take the form of a map.
-- How does MDR-TB incidence vary by country? Do all countries with high TB incidence also have high MDR-TB incidence? Which types of countries are mainly affected by it? When was it introduced to these countries?
-- How do treatment outcomes vary? 
-- How do treatment regimes vary by incidence?
-- What are the differences in the history of the disease in wealthy vs. non-wealthy countries?
+Source data is included in this repository so the project should be self-contained without external dependencies. See below for more details on the data sources.
 
-### Modeling and visualizations
 
-I will start with maps that show incidence. Given that standard maps may be [misleading](http://www.stat.columbia.edu/~gelman/research/published/allmaps.pdf) since they do not show uncertainty, I will try a recent proposal to plot this uncertainty using pixelation ([Taylor et al.](https://arxiv.org/abs/2005.11993)). 
+#### Docker
 
-To further describe the data, I may compute correlations or other measures of association between relevant variables. Depending on the circumstance, these may either be maximum likelihood or Bayesian estimates. 
+To run Docker, you need to install the software on your device and have the ability to run it as your current user. To build the container:
 
-Since the data is longitudinal, some simple time series models may also be implemented. One possible goal could be to predict the next year's incidence rates, worldwide and by nation. 
+	> docker build --tag project-env .
 
-### Criteria for completion
+To run the container on Rstudio server (change the password to your choosing),
 
-The project is open-ended and there is purposefully no specific goal in mind. The idea is to do a descriptive analysis to gain an understanding of the data rather than make any claims of causality. Loosely, I will say that the criteria for completion is attempting to answer the above questions and either finding the answers to them or the reasons why they cannot be reasonably answered with just the data given here.
+	> docker run -v "`pwd`":/home/rstudio -p 8787:8787 -e PASSWORD="helloworld" -t project-env
+
+Then, connect to port 8787 on your device. 
+
+#### Make
+
+You can also use Make to reproduce any elements of the analysis created by the code. For example, to build the final report use:
+
+	> make report.pdf
+
+You can also build any individual target. For example, 
+
+	> make figures/incidence_maps.png
+
+
+### Data sources
+
+This project uses two data sources: the World Health Organization (WHO) and the World Bank. These data are located in `data/source_data/`.
+
+
+#### WHO data
+
+The data was downloaded [here](https://www.who.int/tb/country/data/download/en/) on September 07, 2020 (mostly, the dates of download are indicated in the filenames). Note that the data published on that page is subject to change so the code available in this repository may break with future iterations of the data. 
+
+The filenames are associated with the following links on the WHO page:
+
+| Filename                                  | Text                                                                                                     | Link                                                                    |
+|-------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| MDR_RR_TB_burden_estimates_2020-09-07.csv | Download WHO MDR/RR-TB burden estimates for 2019 [30kb]                                                  | https://extranet.who.int/tme/generateCSV.asp?ds=mdr_rr_estimates        |
+| TB_budget_2020-09-07.csv                  | Download TB budgets since fiscal year 2018 [0.1Mkb]                                                      | https://extranet.who.int/tme/generateCSV.asp?ds=budget                  |
+| TB_burden_age_sex_2020-10-19.csv          | Download WHO TB incidence estimates disaggregated by age, sex and risk factor [0.6Mb]                    | https://extranet.who.int/tme/generateCSV.asp?ds=estimates_age_sex       |
+| TB_burden_countries_2020-09-07.csv        | Download WHO TB burden estimates [0.8Mb]                                                                 | https://extranet.who.int/tme/generateCSV.asp?ds=estimates               |
+| TB_community_engagement_2020-09-07.csv    | Download community engagement activities for TB [40kb]                                                   | https://extranet.who.int/tme/generateCSV.asp?ds=community               |
+| TB_data_dictionary_2020-09-07.csv         | Download the data dictionary [csv 0.1Mb]                                                                 | https://extranet.who.int/tme/generateCSV.asp?ds=dictionary              |
+| TB_dr_surveillance_2020-09-07.csv         | Download drug resistance testing in bacteriologically confirmed pulmonary TB patients since 2017 [0.1Mb] | https://extranet.who.int/tme/generateCSV.asp?ds=dr_surveillance         |
+| TB_expenditure_utilisation_2020-10-19.csv | Download TB expenditure and utilization of health services since fiscal year 2017 [0.1Mb]                | https://extranet.who.int/tme/generateCSV.asp?ds=expenditure_utilisation |
+| TB_outcomes_2020-09-07.csv                | Download treatment outcomes [0.8Mb]                                                                      | https://extranet.who.int/tme/generateCSV.asp?ds=outcomes                |
+
+
+#### World Bank data
+
+The World Bank data was downloaded [here](https://databank.worldbank.org/source/world-development-indicators#). There are two files in the `data/source_data/` directory, one with the actual data and one with metadata that describes that dataset. See the meta dataset for which indicators were chosen. All countries and years 2000-2018 were chosen. 
