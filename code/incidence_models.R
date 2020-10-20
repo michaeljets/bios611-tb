@@ -123,10 +123,11 @@ errors1 = mean((test_set$e_inc_100k - predict(lm_fit1, newdata = test_set))^2)
 errors2 = mean((test_set$e_inc_100k - predict(lm_fit2, newdata = test_set))^2)
 errors3 = mean((test_set$e_inc_100k - predict(lm_fit3, newdata = test_set))^2)
 
-error_tab = data.frame(Model = c(rep('Linear regression', 3), 'Random forest'),
-                       Features = c('All', 'Subset (see text)', 'All except year', 'All'),
+error_tab = data.frame(Model = c(rep('Linear regression', 3), 'Random forest', 'Naive'),
+                       Features = c('All', 'Subset (see text)', 'All except year', 'All', 'None'),
                        Error = c(errors1, errors2, errors3, 
-                                 mean((test_set$e_inc_100k - predict(rf_fit2, newdata = test_set))^2)))
+                                 mean((test_set$e_inc_100k - predict(rf_fit2, newdata = test_set))^2),
+                                 mean((test_set$e_inc_100k - mean(train_set$e_inc_100k))^2)))
 
 
 # Save --------------------------------------------------------------------
@@ -150,14 +151,3 @@ saveRDS(list(lm_fit1, lm_fit2, lm_fit3, rf_fit2), 'models/models.rds')
 
 # model comparison table
 saveRDS(error_tab, 'models/inc_model_comparison.rds')
-
-
-
-
-
-
-# x = outcomes %>% filter(year==2015)
-# View(x %>% select(starts_with('mdr'), starts_with('tbhiv')))
-# xx = x %>% select(starts_with('mdr'), starts_with('tbhiv'))
-# xx[is.na(xx)] = 0
-# svd(xx)
