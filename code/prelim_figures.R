@@ -8,8 +8,6 @@
 
 library(tidyverse)
 
-# setwd("C:/Users/mjets/Dropbox (Personal)/BIOS 611/project1")
-
 burden = read_csv('data/source_data/TB_burden_countries_2020-09-07.csv')
 mdr_tb = read_csv('data/source_data/TB_dr_surveillance_2020-09-07.csv')
 
@@ -81,6 +79,6 @@ gg_mdr = ggplot(mdr_tb2,
 
 ggsave('figures/world_inc.png', gg_world_inc, width = 5, height = 3, units = 'in', scale = 2)
 ggsave('figures/world_deaths.png', gg_world_deaths, width = 5, height = 3, units = 'in', scale = 2)
-ggsave('figures/incidence_pop_all.png', gg_pop1, width = 5, height = 3, units = 'in', scale = 2)
-ggsave('figures/incidence_pop_zoom.png', gg_pop2, width = 5, height = 3, units = 'in', scale = 2)
-ggsave('figures/mdr_counts_country.png', gg_mdr, width = 5, height = 3, units = 'in', scale = 2)
+# ggsave('figures/incidence_pop_all.png', gg_pop1, width = 5, height = 3, units = 'in', scale = 2)
+# ggsave('figures/incidence_pop_zoom.png', gg_pop2, width = 5, height = 3, units = 'in', scale = 2)
+# ggsave('figures/mdr_counts_country.png', gg_mdr, width = 5, height = 3, units = 'in', scale = 2)
