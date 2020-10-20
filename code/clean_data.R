@@ -11,7 +11,7 @@ outcomes = read_csv('data/source_data/TB_outcomes_2020-09-07.csv')
 budget = read_csv('data/source_data/TB_budget_2020-09-07.csv')
 
 # read World Bank data
-country_indicators = read_csv('data/source_data/2b80233d-6ac7-4a61-8a9e-62f87a91d526_Data.csv')
+country_indicators = read_csv('data/source_data/world_bank_data_2020-10-06.csv')
 
 # last few lines are nothing, remove them
 country_indicators = country_indicators %>% filter(!is.na(`Country Code`))
