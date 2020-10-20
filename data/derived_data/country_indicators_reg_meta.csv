@@ -1,0 +1,10 @@
+Series Name,Series Code
+GDP per capita (constant 2010 US$),NY.GDP.PCAP.KD
+"Population, total",SP.POP.TOTL
+"Population ages 15-64, total",SP.POP.1564.TO
+Rural population (% of total population),SP.RUR.TOTL.ZS
+Human capital index (HCI) (scale 0-1),HD.HCI.OVRL
+Population density (people per sq. km of land area),EN.POP.DNST
+"Population, female (% of total population)",SP.POP.TOTL.FE.ZS
+"Unemployment, total (% of total labor force) (modeled ILO estimate)",SL.UEM.TOTL.ZS
+"Labor force participation rate for ages 15-24, total (%) (modeled ILO estimate)",SL.TLF.ACTI.1524.ZS
