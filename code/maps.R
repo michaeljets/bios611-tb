@@ -20,7 +20,7 @@ gg_inc_maps = ggplot(data = world_inc_allyears) +
   geom_sf(aes(fill = e_inc_100k), size = 0.25) +
   scale_fill_viridis_c(option = 'plasma', trans = 'sqrt') + 
   facet_wrap(vars(year), ncol=4, drop=T) +
-  labs(title = 'Estimated incidence per 100k') +
+  labs(title = 'Figure 3: Estimated incidence per 100k') +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         legend.key.width = unit(0.1, 'npc'),
@@ -32,7 +32,7 @@ gg_death_maps = ggplot(data = world_inc_allyears) +
   geom_sf(aes(fill = e_mort_100k), size = 0.25) +
   scale_fill_viridis_c(option = 'plasma', trans = 'sqrt') + 
   facet_wrap(vars(year), ncol=4, drop=T) +
-  labs(title = 'Estimated deaths per 100k') +
+  labs(title = 'Figure 4: Estimated deaths per 100k') +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         legend.key.width = unit(0.1, 'npc'),
@@ -47,7 +47,7 @@ ggsave('figures/death_maps.png', plot = gg_death_maps, scale = 1.5)
 gg_inc_maps_2018 = ggplot(data = world_inc_allyears %>% filter(year==2018)) +
   geom_sf(aes(fill = e_inc_100k), size = 0.5) +
   scale_fill_viridis_c(option = 'plasma', trans = 'sqrt') + 
-  labs(title = 'Estimated incidence per 100k, 2018') +
+  labs(title = 'Figure 5: Estimated incidence per 100k, 2018') +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         legend.key.width = unit(0.1, 'npc'))
@@ -55,7 +55,7 @@ gg_inc_maps_2018 = ggplot(data = world_inc_allyears %>% filter(year==2018)) +
 gg_death_maps_2018 = ggplot(data = world_inc_allyears %>% filter(year==2018)) +
   geom_sf(aes(fill = e_mort_100k), size = 0.5) +
   scale_fill_viridis_c(option = 'plasma', trans = 'sqrt') + 
-  labs(title = 'Estimated deaths per 100k, 2018') +
+  labs(title = 'Figure 6: Estimated deaths per 100k, 2018') +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         legend.key.width = unit(0.1, 'npc'))

@@ -138,7 +138,7 @@ pairs_labs = c('TB incidence', meta$`Series Name`[meta$`Series Code` %in% select
 pairs_labs[pairs_labs=="Unemployment, total (% of total labor force) (modeled ILO estimate)"] = "Unemployment, total (% of total labor force)\n(modeled ILO estimate)"
 pairs(reg_data %>% filter(year=='2018') %>% select_at(c('e_inc_100k', select_indicators)), 
       labels = pairs_labs,
-      main = 'Pairwise scatter plots, 2018 only',
+      main = 'Figure 7: Pairwise scatter plots, 2018 only',
       cex.labels = 1.2)
 dev.off()
 
