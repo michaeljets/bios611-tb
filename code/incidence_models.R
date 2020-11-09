@@ -7,26 +7,8 @@
 source('code/load_libraries.R')
 burden = read_csv('data/source_data/TB_burden_countries_2020-09-07.csv')
 country_indicators = read_csv('data/derived_data/country_indicators.csv')
-
-# prep data for linear regression use
-meta = country_indicators %>% select(`Series Name`, `Series Code`) %>% distinct()
-country_indicators_wide = country_indicators %>%
-  filter(`Series Code` != 'HD.HCI.OVRL') %>%
-  select(-`Series Name`) %>%
-  pivot_wider(names_from = `Series Code`, values_from = value)
-
-# join in TB data
-dat = inner_join(country_indicators_wide, 
-                 burden %>% select(iso3, e_inc_100k, year), 
-                 by = c('Country Code' = 'iso3', 'year'))
-
-# drop observations with missingness and prep for model
-reg_data = dat %>% 
-  select(-`Country Code`) %>% 
-  rename(country = `Country Name`) %>%
-  mutate(year = factor(year)) %>% 
-  drop_na()
-
+reg_data = read_csv('data/derived_data/reg_data.csv')
+meta = read_csv('data/derived_data/country_indicators_reg_meta.csv')
 
 # pairwise scatter plots for select features
 select_indicators = c('NY.GDP.PCAP.KD', 'SP.POP.TOTL', 'SP.RUR.TOTL.ZS', 'SL.UEM.TOTL.ZS')
@@ -141,10 +123,6 @@ pairs(reg_data %>% filter(year=='2018') %>% select_at(c('e_inc_100k', select_ind
       main = 'Figure 7: Pairwise scatter plots, 2018 only',
       cex.labels = 1.2)
 dev.off()
-
-# data
-write_csv(reg_data, 'data/derived_data/reg_data.csv')
-write_csv(meta, 'data/derived_data/country_indicators_reg_meta.csv')
 
 # models
 saveRDS(list(lm_fit1, lm_fit2, lm_fit3, rf_fit2), 'models/models.rds')

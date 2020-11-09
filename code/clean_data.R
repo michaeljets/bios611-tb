@@ -33,5 +33,26 @@ rm_ind = c('SE.ADT.LITR.ZS', 'SE.PRM.NENR', 'SI.POV.GINI', 'GC.DOD.TOTL.GD.ZS', 
            'SH.TBS.INCD', 'SH.TBS.DTEC.ZS')
 country_indicators = country_indicators %>% filter(!(`Series Code` %in% rm_ind))
 
+# prep data for linear regression use
+meta = country_indicators %>% select(`Series Name`, `Series Code`) %>% distinct()
+country_indicators_wide = country_indicators %>%
+  filter(`Series Code` != 'HD.HCI.OVRL') %>%
+  select(-`Series Name`) %>%
+  pivot_wider(names_from = `Series Code`, values_from = value)
+
+# join in TB data
+dat = inner_join(country_indicators_wide, 
+                 burden %>% mutate(year = as.character(year)) %>% select(iso3, e_inc_100k, year), 
+                 by = c('Country Code' = 'iso3', 'year'))
+
+# drop observations with missingness and prep for model
+reg_data = dat %>% 
+  select(-`Country Code`) %>% 
+  rename(country = `Country Name`) %>%
+  mutate(year = factor(year)) %>% 
+  drop_na()
+
 # save it
 write_csv(country_indicators, 'data/derived_data/country_indicators.csv')
+write_csv(reg_data, 'data/derived_data/reg_data.csv')
+write_csv(meta, 'data/derived_data/country_indicators_reg_meta.csv')

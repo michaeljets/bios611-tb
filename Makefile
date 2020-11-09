@@ -17,9 +17,8 @@ data/derived_data/country_indicators.csv:\
 data/derived_data/reg_data.csv\
  data/derived_data/country_indicators_reg_meta.csv:\
  code/clean_data.R\
- code/load_libraries.R\
- code/incidence_models.R
-	Rscript code/incidence_models.R
+ code/load_libraries.R
+	Rscript code/clean_data.R
 
 # figures for report
 figures/incidence_maps.png\
