@@ -21,7 +21,7 @@ world_burden = burden %>%
             incidence_high = (sum(e_inc_num_hi) / sum(e_pop_num))*100000,
             deaths = (sum(e_mort_num) / sum(e_pop_num))*100000,
             deaths_low = (sum(e_mort_num_lo) / sum(e_pop_num))*100000,
-            deaths_high = (sum(e_mort_num_hi) / sum(e_pop_num))*100000,)
+            deaths_high = (sum(e_mort_num_hi) / sum(e_pop_num))*100000)
 
 gg_world_inc = ggplot(data = world_burden,
        mapping = aes(x = year)) +
