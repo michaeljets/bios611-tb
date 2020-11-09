@@ -1,4 +1,5 @@
 .PHONY: clean
+.PHONY: shiny_app
 SHELL: /bin/bash
 
 clean:
@@ -62,3 +63,8 @@ report.pdf:\
  data/derived_data/country_indicators_reg_meta.csv\
  code/clean_data.R
 	Rscript -e "rmarkdown::render('report.Rmd')"
+
+# shiny app
+shiny_app:\
+ data/derived_data/reg_data.csv
+	Rscript code/shiny_country_trends.R ${PORT}

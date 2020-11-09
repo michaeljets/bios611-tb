@@ -16,13 +16,15 @@ RUN R -e "install.packages('kableExtra')"
 RUN R -e "install.packages('stargazer')"
 RUN R -e "install.packages('gbm')"
 RUN R -e "install.packages('caret')"
+RUN R -e "install.packages('shiny')"
+RUN R -e "install.packages('shinyWidgets')"
 
 # python stuff
 RUN apt update -y && apt install -y python3-pip
 RUN pip3 install jupyter jupyterlab
 RUN pip3 install numpy pandas sklearn plotnine matplotlib pandasql bokeh seaborn
-RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
-RUN bash nodesource_setup.sh
-RUN apt update -y && apt install -y nodejs 
-RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
-RUN jupyter labextension install @bokeh/jupyter_bokeh
+#RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+#RUN bash nodesource_setup.sh
+#RUN apt update -y && apt install -y nodejs 
+#RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
+#RUN jupyter labextension install @bokeh/jupyter_bokeh

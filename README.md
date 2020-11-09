@@ -18,6 +18,8 @@ A summary of the analyses are presented in `report.pdf`.
 
 The project uses Docker and Make to be reproducible. Docker is a software that manages environments and Make is a tool that builds files produced by the code, including the `report.pdf`, the summary of my analyses. 
 
+There is also an R Shiny app that allows the user to interactively examine trends in TB statistics by individual countries. Instructions are included to run the Shiny app from Docker.
+
 Source data is included in this repository so the project should be self-contained without external dependencies. See below for more details on the data sources.
 
 
@@ -42,6 +44,18 @@ You can also use Make to reproduce any elements of the analysis created by the c
 You can also build any individual target. For example, 
 
 	> make figures/incidence_maps.png
+
+#### Shiny
+
+To run the Shiny app, you must open another port when running Docker, e.g.:
+
+	> sudo docker run -v "`pwd`:/home/rstudio" -e PASSWORD=helloworld -p 8787:8787 -p 8788:8788 -t project1
+
+Then from the RStudio instance within the Docker container, go to the terminal and run:
+
+	> PORT=8788 make shiny_app
+
+And go the port 8788 on your device to use the app.
 
 
 ### Data sources
