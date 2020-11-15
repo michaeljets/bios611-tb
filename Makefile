@@ -38,6 +38,8 @@ figures/pair_scatter.png:\
 figures/world_inc.png\
  figures/world_deaths.png:
 	Rscript code/prelim_figures.R
+figures/budget_inc.png:
+	python3 code/plot_budget_inc.py
 
 # models
 models/models.rds\
