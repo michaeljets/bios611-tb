@@ -61,6 +61,7 @@ report.pdf:\
  figures/pair_scatter.png\
  figures/world_deaths.png\
  figures/world_inc.png\
+ figures/budget_inc.png\
  data/derived_data/country_indicators_reg_meta.csv\
  code/clean_data.R
 	Rscript -e "rmarkdown::render('report.Rmd')"
