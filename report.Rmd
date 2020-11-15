@@ -1,7 +1,7 @@
 ---
 title: "BIOS 611 Project 1"
 author: "Michael Jetsupphasuk"
-date: "October 19, 2020"
+date: "November 16, 2020"
 output: pdf_document
 ---
 
@@ -88,6 +88,11 @@ error_tab = readRDS('models/inc_model_comparison.rds')
 kable(error_tab %>% mutate(MSE = round(Error)) %>% select(-Error), caption = 'Model prediction errors summary')
 ```
 
+## Relationship between incidence and buget
+
+In Figure 8, we plot TB incidence per 100,000 people against the total TB-related budget in 2018 for all countries where data was available for both. The relationship is extremely non-linear with some countries like Russia (the right-most point) having very large budgets and moderate incidence while in most countries where TB is a huge problem, the budgets are much smaller.
+
+![](figures/budget_inc.png)
 
 ## Future extensions
 
